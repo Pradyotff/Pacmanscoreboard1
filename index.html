@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pac-Man Highscore Tournament</title>
+  <title>Pac-Man Leaderboards</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
@@ -16,6 +16,7 @@
       font-family: 'Press Start 2P', cursive;
       text-align: center;
       scroll-behavior: smooth;
+      position: relative;
     }
 
     .container {
@@ -27,9 +28,8 @@
       padding-bottom: 60px;
     }
 
-    /* === LOGO === */
     .logo {
-      width: 540px; /* bigger logo */
+      width: 540px;
       margin-top: -20px;
       margin-bottom: 10px;
       image-rendering: pixelated;
@@ -38,9 +38,9 @@
 
     .staff-title {
       color: #ffffff;
-      font-size: 40px; /* 🔥 bigger text */
+      font-size: 40px;
       font-weight: bold;
-      margin-top: -130px; /* moves it upward closer to the logo */
+      margin-top: -130px;
       margin-bottom: 5px;
       text-shadow: 0 0 15px #ffeb3b, 0 0 40px #ffcc00, 0 0 70px #ffaa00;
       letter-spacing: 3px;
@@ -52,7 +52,6 @@
       50% { text-shadow: 0 0 25px #fff176, 0 0 70px #ffcc33; }
     }
 
-    /* === TITLE === */
     .subtitle {
       color: #00ffff;
       font-size: 26px;
@@ -61,7 +60,6 @@
       letter-spacing: 2px;
     }
 
-    /* === LEADERBOARD === */
     .leaderboard {
       width: 570px;
       border-collapse: collapse;
@@ -83,7 +81,6 @@
       text-shadow: 0 0 6px currentColor, 0 0 15px currentColor;
     }
 
-    /* === Row Colors === */
     .leaderboard tr:nth-child(1) td { color: #ff0000; }
     .leaderboard tr:nth-child(2) td { color: #ffa500; }
     .leaderboard tr:nth-child(3) td { color: #00ff7f; }
@@ -94,26 +91,61 @@
     .leaderboard tr:nth-child(8) td { color: #4169e1; }
     .leaderboard tr:nth-child(9) td { color: #9370db; }
     .leaderboard tr:nth-child(10) td { color: #ff69b4; }
-    .leaderboard tr:nth-child(11) td { color: #ffd700; }  /* gold yellow */
-.leaderboard tr:nth-child(12) td { color: #adff2f; }  /* greenish-lime */
-.leaderboard tr:nth-child(13) td { color: #ff7f50; }  /* coral orange */
-.leaderboard tr:nth-child(14) td { color: #00fa9a; }  /* mint green */
-.leaderboard tr:nth-child(15) td { color: #ba55d3; }  /* purple-magenta */
+    .leaderboard tr:nth-child(11) td { color: #ffd700; }
+    .leaderboard tr:nth-child(12) td { color: #adff2f; }
+    .leaderboard tr:nth-child(13) td { color: #ff7f50; }
+    .leaderboard tr:nth-child(14) td { color: #00fa9a; }
+    .leaderboard tr:nth-child(15) td { color: #ba55d3; }
 
+    .button-container {
+      position: fixed;
+      top: 50%;
+      right: 40px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      z-index: 10;
+    }
+
+    .arcade-button {
+      background: linear-gradient(145deg, #111, #000);
+      border: 2px solid #f5c518;
+      color: #f5c518;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #f5c518, inset 0 0 10px #f5c518;
+      text-transform: uppercase;
+      transition: all 0.25s ease-in-out;
+    }
+
+    .arcade-button:hover {
+      transform: scale(1.1);
+      color: #000;
+      background: #f5c518;
+      box-shadow: 0 0 25px #f5c518, 0 0 50px #f5c518;
+    }
 
     @media (max-width: 700px) {
-      .logo { width: 260px; margin-top: 25px; }
-      .subtitle { font-size: 18px; margin: 15px 0; }
-      .leaderboard { width: 95vw; transform: scale(1); }
-      .leaderboard td, .leaderboard th { font-size: 10px; padding: 6px 0; }
+      .button-container { position: static; flex-direction: row; justify-content: center; margin-top: 20px; }
+      .arcade-button { font-size: 8px; padding: 10px 12px; }
     }
   </style>
 </head>
 
 <body>
+  <div class="button-container">
+    <button class="arcade-button" onclick="showLeaderboard('staff')">Staff Leaderboard</button>
+    <button class="arcade-button" onclick="showLeaderboard('highschool')">Highschool Leaderboard</button>
+    <button class="arcade-button" onclick="showLeaderboard('middle')">Middle School Leaderboard</button>
+  </div>
+
   <div class="container">
     <img src="Adobe Express - file (4).png" alt="Pac-Man Logo" class="logo">
-    <div class="staff-title">Staff Leaderboard</div>
+    <div id="leaderboardTitle" class="staff-title">Staff Leaderboard</div>
     <div class="subtitle">HIGH SCORES</div>
 
     <table class="leaderboard" id="leaderboardBody">
@@ -129,13 +161,15 @@
   </div>
 
   <script>
-    const leaderboard = [
+    // --- Leaderboard Data ---
+    const staffLeaderboard = [
       { name: 'Mr. Good', score: 15620 },
       { name: 'Mr. Plantier', score: 13990 },
       { name: 'Mr. Pfaeffle', score: 13690 },
       { name: 'Mr. Civil', score: 9770 },
       { name: 'Ms. Dunne', score: 9750 },
       { name: 'Mr. Vargas', score: 6640 },
+      { name: 'Ms. Bien-Aime', score: 6000 },
       { name: 'Mr. Jacob', score: 5740 },
       { name: 'Ms. Giordani', score: 5220 },
       { name: 'Mr. LoRusso', score: 5210 },
@@ -144,9 +178,45 @@
       { name: 'Mr. Seidel', score: 3990 },
       { name: 'Mr. Gonzalez', score: 3850 },
       { name: 'Mr. Malik', score: 3720 },
-      { name: 'Mr. Fischer', score: 3580 }
     ];
 
+    const highschoolLeaderboard = [
+      { name: 'Aiden', score: 18900 },
+      { name: 'Samantha', score: 17650 },
+      { name: 'Michael', score: 17000 },
+      { name: 'Ethan', score: 16020 },
+      { name: 'Olivia', score: 15000 },
+      { name: 'Daniel', score: 14700 },
+      { name: 'Emily', score: 14100 },
+      { name: 'James', score: 13800 },
+      { name: 'Liam', score: 13000 },
+      { name: 'Sophia', score: 12500 },
+      { name: 'Noah', score: 12100 },
+      { name: 'Lucas', score: 11600 },
+      { name: 'Ella', score: 11000 },
+      { name: 'Jacob', score: 10700 },
+      { name: 'Ava', score: 10300 },
+    ];
+
+    const middleSchoolLeaderboard = [
+      { name: 'Ryan', score: 8900 },
+      { name: 'Chloe', score: 8750 },
+      { name: 'Tyler', score: 8600 },
+      { name: 'Lila', score: 8420 },
+      { name: 'Evan', score: 8300 },
+      { name: 'Sophia', score: 8200 },
+      { name: 'Jackson', score: 8050 },
+      { name: 'Ariana', score: 7900 },
+      { name: 'Mason', score: 7800 },
+      { name: 'Ella', score: 7700 },
+      { name: 'Zoe', score: 7600 },
+      { name: 'Caleb', score: 7550 },
+      { name: 'Olive', score: 7400 },
+      { name: 'David', score: 7300 },
+      { name: 'Liam', score: 7200 },
+    ];
+
+    // --- Utility Functions ---
     function getSuffix(rank) {
       if (rank === 1) return 'ST';
       if (rank === 2) return 'ND';
@@ -154,9 +224,10 @@
       return 'TH';
     }
 
-    function renderLeaderboard() {
+    function renderLeaderboard(data) {
       const tbody = document.querySelector('#leaderboardBody tbody');
-      leaderboard.slice(0, 15).forEach((player, i) => {
+      tbody.innerHTML = '';
+      data.slice(0, 15).forEach((player, i) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${i + 1}${getSuffix(i + 1)}</td>
@@ -167,7 +238,22 @@
       });
     }
 
-    renderLeaderboard();
+    function showLeaderboard(type) {
+      const title = document.getElementById('leaderboardTitle');
+      if (type === 'staff') {
+        title.textContent = 'Staff Leaderboard';
+        renderLeaderboard(staffLeaderboard);
+      } else if (type === 'highschool') {
+        title.textContent = 'Highschool Leaderboard';
+        renderLeaderboard(highschoolLeaderboard);
+      } else {
+        title.textContent = 'Middle School Leaderboard';
+        renderLeaderboard(middleSchoolLeaderboard);
+      }
+    }
+
+    // Default on load
+    showLeaderboard('staff');
   </script>
 </body>
 </html>
