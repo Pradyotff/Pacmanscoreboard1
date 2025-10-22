@@ -37,20 +37,20 @@
     }
 
     .staff-title {
-  color: #ffffff;
-  font-size: 40px;             /* 🔥 bigger text */
-  font-weight: bold;
-  margin-top: -130px;           /* moves it upward closer to the logo */
-  margin-bottom: 5px;
-  text-shadow: 0 0 15px #ffeb3b, 0 0 40px #ffcc00, 0 0 70px #ffaa00;
-  letter-spacing: 3px;
-  animation: staffPulse 3s infinite ease-in-out;
-}
+      color: #ffffff;
+      font-size: 40px; /* 🔥 bigger text */
+      font-weight: bold;
+      margin-top: -130px; /* moves it upward closer to the logo */
+      margin-bottom: 5px;
+      text-shadow: 0 0 15px #ffeb3b, 0 0 40px #ffcc00, 0 0 70px #ffaa00;
+      letter-spacing: 3px;
+      animation: staffPulse 3s infinite ease-in-out;
+    }
 
-@keyframes staffPulse {
-  0%, 100% { text-shadow: 0 0 15px #ffeb3b, 0 0 40px #ffcc00; }
-  50% { text-shadow: 0 0 25px #fff176, 0 0 70px #ffcc33; }
-}
+    @keyframes staffPulse {
+      0%, 100% { text-shadow: 0 0 15px #ffeb3b, 0 0 40px #ffcc00; }
+      50% { text-shadow: 0 0 25px #fff176, 0 0 70px #ffcc33; }
+    }
 
     /* === TITLE === */
     .subtitle {
@@ -63,7 +63,7 @@
 
     /* === LEADERBOARD === */
     .leaderboard {
-      width: 700px;
+      width: 570px;
       border-collapse: collapse;
       margin: 0 auto;
       transform: scale(1.1);
@@ -94,16 +94,15 @@
     .leaderboard tr:nth-child(8) td { color: #4169e1; }
     .leaderboard tr:nth-child(9) td { color: #9370db; }
     .leaderboard tr:nth-child(10) td { color: #ff69b4; }
+    .leaderboard tr:nth-child(11) td { color: #ffd700; }  /* gold yellow */
+.leaderboard tr:nth-child(12) td { color: #adff2f; }  /* greenish-lime */
+.leaderboard tr:nth-child(13) td { color: #ff7f50; }  /* coral orange */
+.leaderboard tr:nth-child(14) td { color: #00fa9a; }  /* mint green */
+.leaderboard tr:nth-child(15) td { color: #ba55d3; }  /* purple-magenta */
 
-    /* === House color glow === */
-    .house-yellow { color: #ffeb3b; text-shadow: 0 0 10px #ffeb3b, 0 0 25px #ffcc00; }
-    .house-blue { color: #00bfff; text-shadow: 0 0 10px #00bfff, 0 0 25px #0099ff; }
-    .house-red { color: #ff4d4d; text-shadow: 0 0 10px #ff4d4d, 0 0 25px #ff0000; }
-    .house-green { color: #00ff7f; text-shadow: 0 0 10px #00ff7f, 0 0 25px #00cc66; }
 
     @media (max-width: 700px) {
       .logo { width: 260px; margin-top: 25px; }
-      
       .subtitle { font-size: 18px; margin: 15px 0; }
       .leaderboard { width: 95vw; transform: scale(1); }
       .leaderboard td, .leaderboard th { font-size: 10px; padding: 6px 0; }
@@ -123,7 +122,6 @@
           <th>Rank</th>
           <th>Name</th>
           <th>Score</th>
-          <th>Grade</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -132,16 +130,21 @@
 
   <script>
     const leaderboard = [
-      { name: 'Mr. Good', score: 15620, grade: 'Teacher', house: '()' },
-      { name: 'Mr. Plantier', score: 13990, grade: 'Teacher', house: '()' },
-      { name: 'Mr. Pfaeffle', score: 13690, grade: 'Teacher', house: '()' },
-      { name: 'Mr. Civil', score: 9770, grade: 'Teacher', house: '()' },
-      { name: 'Ms. Dunne', score: 9750, grade: 'Teacher', house: '()' },
-      { name: 'Mr. Vargas', score: 6640, grade: 'Teacher', house: '()' },
-      { name: 'Mr. Jacob', score: 5740, grade: 'Teacher', house: '()' },
-      { name: 'Ms. Giordani', score: 5220, grade: 'Teacher', house: '()' },
-      { name: 'Mr. LoRusso', score: 5210, grade: 'Teacher', house: '()' },
-      { name: 'Mr. Bynum', score: 4290, grade: 'Teacher', house: '()' }
+      { name: 'Mr. Good', score: 15620 },
+      { name: 'Mr. Plantier', score: 13990 },
+      { name: 'Mr. Pfaeffle', score: 13690 },
+      { name: 'Mr. Civil', score: 9770 },
+      { name: 'Ms. Dunne', score: 9750 },
+      { name: 'Mr. Vargas', score: 6640 },
+      { name: 'Mr. Jacob', score: 5740 },
+      { name: 'Ms. Giordani', score: 5220 },
+      { name: 'Mr. LoRusso', score: 5210 },
+      { name: 'Mr. Bynum', score: 4290 },
+      { name: 'Mr. Peaks', score: 4100 },
+      { name: 'Mr. Seidel', score: 3990 },
+      { name: 'Mr. Gonzalez', score: 3850 },
+      { name: 'Mr. Malik', score: 3720 },
+      { name: 'Mr. Fischer', score: 3580 }
     ];
 
     function getSuffix(rank) {
@@ -153,17 +156,12 @@
 
     function renderLeaderboard() {
       const tbody = document.querySelector('#leaderboardBody tbody');
-      leaderboard.forEach((player, i) => {
+      leaderboard.slice(0, 15).forEach((player, i) => {
         const row = document.createElement('tr');
-        const houseClass = player.house.toLowerCase() === 'yellow' ? 'house-yellow' :
-                           player.house.toLowerCase() === 'blue' ? 'house-blue' :
-                           player.house.toLowerCase() === 'red' ? 'house-red' :
-                           'house-green';
         row.innerHTML = `
           <td>${i + 1}${getSuffix(i + 1)}</td>
           <td>${player.name}</td>
           <td>${player.score}</td>
-          <td>${player.grade}</td>
         `;
         tbody.appendChild(row);
       });
