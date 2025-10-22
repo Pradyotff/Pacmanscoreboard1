@@ -1,51 +1,81 @@
 @media (max-width: 700px) {
+  /* Make layout flexible and centered for mobile */
   .leaderboard-container {
-   width: 100vw;
-   min-height: 100vh;
-   height: auto;
-   padding: 0;
-   box-sizing: border-box;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: flex-start;
-   overflow-x: auto;
+    width: 100vw;
+    min-height: 100vh;
+    height: auto;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    transform: scale(0.95);
   }
+
+  /* Smaller, centered title */
   h1 {
-   font-size: 1rem;
-   margin-bottom: 8px;
-   text-align: center !important;
-   width: 100vw;
-   display: block;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    text-align: center;
+    width: 100%;
   }
+
+  /* Leaderboard fits full width */
   .leaderboard {
-   width: 100vw;
-   min-width: 400px;
-   max-width: none;
-   font-size: 0.7rem;
-   border-radius: 8px;
-   display: block;
-   overflow-x: auto;
-   box-shadow: none;
-   margin: 0 auto;
+    width: 95vw;
+    max-width: none;
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: none;
+    margin: 10px auto;
+    font-size: 0.8rem;
   }
+
   .leaderboard th, .leaderboard td {
-   padding: 4px 1px;
-   font-size: 0.7rem;
-   white-space: nowrap;
+    padding: 8px 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
+
   .leaderboard th {
-   font-size: 0.75rem;
+    font-size: 0.8rem;
   }
+
+  /* Gold/Silver/Bronze font tweaks for visibility */
   .leaderboard tr.gold {
-   font-size: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  /* Buttons move to bottom center (for mobile layouts) */
+  .button-container {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    z-index: 20;
+  }
+
+  .arcade-button {
+    font-size: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
   }
 }
+
+/* ===== DESKTOP STAYS THE SAME ===== */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #0d0d1a 60%, #1a1a33 100%);
@@ -55,6 +85,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .leaderboard-container {
   width: 100vw;
   height: 100vh;
@@ -64,6 +95,7 @@ body {
   justify-content: center;
   background: rgba(20, 20, 40, 0.98);
 }
+
 h1 {
   margin-bottom: 40px;
   font-size: 3rem;
@@ -71,6 +103,7 @@ h1 {
   letter-spacing: 2px;
   text-shadow: 0 2px 10px #000;
 }
+
 .leaderboard {
   width: 750px;
   max-width: 95vw;
@@ -80,36 +113,43 @@ h1 {
   overflow: hidden;
   box-shadow: 0 8px 32px #0008;
 }
+
 .leaderboard th, .leaderboard td {
   padding: 22px 18px;
   font-size: 1.5rem;
   text-align: center;
 }
+
 .leaderboard th {
   background: #23234a;
   color: #f5c518;
   font-size: 1.3rem;
   letter-spacing: 1px;
 }
+
 .leaderboard tr.gold {
   background: linear-gradient(90deg, #ffd700 80%, #fffbe6 100%);
   color: #222;
   font-weight: bold;
   font-size: 1.7rem;
 }
+
 .leaderboard tr.silver {
   background: linear-gradient(90deg, #c0c0c0 80%, #f8f8f8 100%);
   color: #222;
   font-weight: bold;
 }
+
 .leaderboard tr.bronze {
   background: linear-gradient(90deg, #cd7f32 80%, #ffe5c2 100%);
   color: #222;
   font-weight: bold;
 }
+
 .leaderboard tr {
   transition: background 0.2s;
 }
+
 .leaderboard tr:not(.gold):not(.silver):not(.bronze):hover {
   background: #23234a;
 }
